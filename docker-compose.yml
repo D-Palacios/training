@@ -1,0 +1,41 @@
+version: "2.4"
+services:
+  nifi:
+    image: apache/nifi:1.9.2
+    ports:
+      - "8081:8080"
+      - "8999:8999"
+    volumes:
+      - type: volume
+        source: nifi-data-conf
+        target: /opt/nifi/nifi-current/conf
+      - type: volume
+        source: nifi-data-database_repository
+        target: /opt/nifi/nifi-current/database_repository
+      - type: volume
+        source: nifi-data-flowfile_repository
+        target: /opt/nifi/nifi-current/flowfile_repository
+      - type: volume
+        source: nifi-data-content_repository
+        target: /opt/nifi/nifi-current/content_repository
+      - type: volume
+        source: nifi-data-provenance_repository
+        target: /opt/nifi/nifi-current/provenance_repository
+      - type: volume
+        source: nifi-data-state
+        target: /opt/nifi/nifi-current/state
+
+  my_function_1:
+    image: openfaas:0.1.0
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV1=VAL1
+
+volumes:
+  nifi-data-conf:
+  nifi-data-database_repository:
+  nifi-data-flowfile_repository:
+  nifi-data-content_repository:
+  nifi-data-provenance_repository:
+  nifi-data-state:
