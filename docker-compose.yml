@@ -30,7 +30,18 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - ENV1=VAL1
+      - CONFIG_FILE=alt_config1.json
+    volumes: 
+      - C://Users//david//Documents//Formacion//templates-master//templates-master//template//python3//configs:/root/src/config
+
+  my_function_2:
+    image: openfaas:0.1.0
+    ports:
+      - "8082:8080"
+    environment:
+      - CONFIG_FILE=alt_config2.json
+    volumes: 
+      - C://Users//david//Documents//Formacion//templates-master//templates-master//template//python3//configs:/root/src/config
 
 volumes:
   nifi-data-conf:
