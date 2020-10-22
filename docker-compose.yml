@@ -24,24 +24,25 @@ services:
       - type: volume
         source: nifi-data-state
         target: /opt/nifi/nifi-current/state
+      - /Users/cgarcia/Downloads:/opt/nifi/nifi-current/data/
 
   my_function_1:
-    image: openfaas:0.1.0
+    image: miapp:0.1
     ports:
       - "8080:8080"
     environment:
       - CONFIG_FILE=alt_config1.json
     volumes: 
-      - C://Users//david//Documents//Formacion//templates-master//templates-master//template//python3//configs:/root/src/config
+      - /Users/cgarcia/training/configs:/root/src/config
 
   my_function_2:
-    image: openfaas:0.1.0
+    image: miapp:0.1
     ports:
       - "8082:8080"
     environment:
       - CONFIG_FILE=alt_config2.json
     volumes: 
-      - C://Users//david//Documents//Formacion//templates-master//templates-master//template//python3//configs:/root/src/config
+      - /Users/cgarcia/training/configs:/root/src/config
 
 volumes:
   nifi-data-conf:
@@ -50,3 +51,9 @@ volumes:
   nifi-data-content_repository:
   nifi-data-provenance_repository:
   nifi-data-state:
+  
+
+
+
+
+
