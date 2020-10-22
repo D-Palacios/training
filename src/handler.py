@@ -1,36 +1,31 @@
 import os
 import sys
-import json
-from config import Configuration
+import pandas as pd
 
 path = os.getenv("Http_Path")
 method = os.getenv("Http_Method")
 
+def process_post(req):
+    flowfile = [line.split(',') for line in req.split('\n')]
+    flowfile = pd.DataFrame(data=flowfile[1:], columns=flowfile[0])
+    flowfile['RSE'].replace('', 0, inplace=True)
+    averages = dict.fromkeys(set(flowfile['MsCode'].values))
+    for key,_ in averages.items():
+        averages[key] = flowfile['RSE'].where(flowfile['MsCode'] == key).astype(float).mean()
 
-def process_post(req, config):
-    try:
-        return "Function " + req + " = " + str(config.data[req])
-    except KeyError:
-        print("Key not allowed!", file=sys.stderr)
+    flowfile['RSE'].replace(0, '', inplace=True)
+    flowfile['Avg_RSE'] = flowfile['MsCode'].replace(averages)
 
-
-def process_get(config):
-    return json.dumps(config.data, indent=4)
-
+    return flowfile.to_csv(index=False)
 
 def handle(req):
     """handle a request to the function
     Args:
         req (str): request body
-    """
-
-    config = Configuration()
-    
+    """    
     print(f"Path: {path}. Method: {method}", file=sys.stderr)
 
     if method == "POST":
-        return process_post(req, config)
-    elif method == "GET":
-        return process_get(config)
+        return process_post(req)
     else:
-        raise Exception("Only GET or POST allowed!")
+        raise Exception("Only POST allowed!")
