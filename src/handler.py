@@ -8,6 +8,7 @@ method = os.getenv("Http_Method")
 def process_post(req):
     flowfile = [line.split(',') for line in req.split('\n')]
     flowfile = pd.DataFrame(data=flowfile[1:], columns=flowfile[0])
+    flowfile.drop(flowfile.tail(1).index, inplace=True)
     flowfile['RSE'].replace('', 0, inplace=True)
     averages = dict.fromkeys(set(flowfile['MsCode'].values))
     for key,_ in averages.items():

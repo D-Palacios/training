@@ -30,7 +30,7 @@ services:
     ports: 
       - "8080:8080"
     volumes: 
-      - E:\manu_\Escritorio\PracticasTupl\Pr0\src:/root/src
+      - E:\manu_\Escritorio\PracticasTupl\training\src:/root/src
 
 volumes:
   nifi-data-conf:
